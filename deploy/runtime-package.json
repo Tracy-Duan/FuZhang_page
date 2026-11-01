@@ -1,0 +1,17 @@
+{
+  "name": "fuzhang-server",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env.local server/start.mjs",
+    "init-env": "node deploy/init-env.mjs"
+  },
+  "dependencies": {
+    "opencc-js": "1.4.2"
+  },
+  "license": "MIT"
+}

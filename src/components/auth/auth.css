@@ -1,0 +1,462 @@
+/* 服章 · 邀请制登录与注册组件样式（严格继承主系统设计规范与色卡） */
+
+.fz-auth-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(27, 31, 27, 0.38);
+  backdrop-filter: blur(4px);
+  padding: 16px;
+  top: var(--auth-top, 0px);
+  bottom: auto;
+  height: var(--auth-vh, 100dvh);
+  animation: fz-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reserve a ledge outside the scrollable card so the same spirit can perch on it. */
+.fz-auth-shell {
+  --auth-cinnabar: color-mix(in srgb, var(--cinnabar, #963e37) 65%, var(--muted, #777c75));
+  --auth-cinnabar-hover: color-mix(in srgb, var(--auth-cinnabar) 88%, var(--ink, #1c211d));
+  position: relative;
+  width: 100%;
+  max-width: 410px;
+  max-height: calc(var(--auth-vh, 100dvh) - 32px);
+  padding-top: 80px;
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+}
+.fz-auth-spirit-host { position: absolute; left: 22px; top: 0; width: 96px; height: 96px; z-index: var(--pet-layer); }
+.fz-auth-spirit-speech {
+  position: absolute; top: 26px; left: 126px; right: 16px; margin: 0;
+  font-family: var(--serif, serif); font-size: 12px; line-height: 1.8; color: #f7f5f0;
+  text-shadow: 0 1px 6px rgba(27,31,27,.5); pointer-events: none;
+}
+.pet-stage.pet-stage--auth { position: relative; width: 96px; height: 96px; margin: 0; }
+.pet-stage--auth .pet-ground { display: none; }
+.pet-stage--auth .pet-character {
+  top: 0; bottom: auto; cursor: pointer; touch-action: manipulation;
+  animation: fz-spirit-arrive .65s both cubic-bezier(.2,.65,.3,1);
+}
+.pet-stage--auth[data-motion="false"] .pet-character { animation: none; }
+@keyframes fz-spirit-arrive {
+  0% { transform: translate3d(var(--auth-from-x, 0px), var(--auth-from-y, 80px), 0) scale(.92, 1.06); }
+  58% { transform: translate3d(0,-24px,0) scale(.94,1.05); }
+  84% { transform: translate3d(0,0,0) scale(1.08,.9); }
+  100% { transform: translate3d(0,0,0) scale(1); }
+}
+@media (max-width: 380px) {
+  .fz-auth-spirit-host { left: 12px; }
+  .fz-auth-spirit-speech { left: 110px; right: 8px; font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pet-stage--auth .pet-character { animation: none; }
+}
+
+@keyframes fz-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fz-auth-card {
+  position: relative;
+  width: 100%;
+  max-width: 410px;
+  background-color: var(--paper, #f7f5f0);
+  border: 1px solid var(--line-strong, #bec4ba);
+  border-radius: 6px;
+  box-shadow: 0 18px 48px rgba(27, 31, 27, 0.14), 0 2px 6px rgba(0, 0, 0, 0.04);
+  min-height: 0;
+  max-height: calc(var(--auth-vh, 100dvh) - 112px);
+  overflow-x: hidden;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  font-family: var(--sans, sans-serif);
+  color: var(--ink, #1c211d);
+  animation: fz-scale-in 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fz-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.fz-auth-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--muted, #777c75);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.fz-auth-close-btn:hover {
+  background: rgba(102, 121, 104, 0.1);
+  color: var(--ink, #1c211d);
+}
+
+.fz-auth-header {
+  flex-shrink: 0;
+  padding: 24px 24px 18px 24px;
+  text-align: center;
+  border-bottom: 1px solid var(--line, #d9dcd3);
+  background: var(--paper-deep, #efede6);
+}
+
+.fz-auth-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--serif, serif);
+  font-size: 12px;
+  color: var(--auth-cinnabar);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+
+.fz-auth-brand-badge .brand-logo {
+  width: 28px;
+  height: 28px;
+}
+
+.fz-auth-title {
+  font-family: var(--serif, serif);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+  color: var(--ink, #1c211d);
+  letter-spacing: 0.06em;
+}
+
+.fz-auth-subtitle {
+  font-family: var(--serif, serif);
+  font-size: 12px;
+  color: var(--muted, #777c75);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* 选项卡 */
+.fz-auth-tabs {
+  flex-shrink: 0;
+  display: flex;
+  margin: 16px 24px 0 24px;
+  padding: 3px;
+  background: var(--paper-deep, #efede6);
+  border: 1px solid var(--line, #d9dcd3);
+  border-radius: 4px;
+}
+
+.fz-auth-tab {
+  flex: 1;
+  padding: 7px 0;
+  border: none;
+  background: transparent;
+  font-family: var(--serif, serif);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted, #777c75);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-align: center;
+}
+
+.fz-auth-tab.active {
+  background: var(--paper, #f7f5f0);
+  color: var(--ink, #1c211d);
+  box-shadow: 0 1px 3px rgba(27, 31, 27, 0.08);
+  font-weight: 600;
+}
+
+/* 表单主体 */
+.fz-auth-form {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  flex: 0 1 auto;
+  padding: 18px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.fz-auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.fz-auth-form > * { flex-shrink: 0; }
+
+.fz-auth-label {
+  font-family: var(--serif, serif);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink, #1c211d);
+  display: flex;
+  justify-content: space-between;
+}
+
+.fz-auth-required {
+  color: var(--auth-cinnabar);
+  margin-left: 2px;
+}
+
+.fz-auth-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.fz-auth-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--line-strong, #bec4ba);
+  border-radius: 4px;
+  font-family: var(--sans, sans-serif);
+  font-size: 14px;
+  color: var(--ink, #1c211d);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+  box-sizing: border-box;
+}
+
+.fz-auth-input:focus {
+  background: #ffffff;
+  border-color: var(--auth-cinnabar);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--auth-cinnabar) 14%, transparent);
+}
+
+.fz-auth-input::placeholder {
+  color: var(--faint, #a3a8a0);
+}
+
+/* 邀请码特色框 */
+.fz-auth-input.invite-code-input {
+  letter-spacing: 2px;
+  font-family: monospace;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: var(--auth-cinnabar);
+  font-weight: 600;
+  border-color: color-mix(in srgb, var(--auth-cinnabar) 35%, transparent);
+  background: color-mix(in srgb, var(--auth-cinnabar) 3%, transparent);
+}
+
+.fz-auth-tip {
+  font-size: 12px;
+  color: var(--muted, #777c75);
+  line-height: 1.4;
+  font-family: var(--sans, sans-serif);
+}
+
+.fz-auth-error {
+  padding: 9px 12px;
+  background-color: color-mix(in srgb, var(--auth-cinnabar) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--auth-cinnabar) 28%, transparent);
+  border-radius: 4px;
+  font-family: var(--serif, serif);
+  font-size: 12px;
+  color: var(--auth-cinnabar-hover);
+  line-height: 1.5;
+  animation: fz-shake 0.3s ease;
+}
+
+@keyframes fz-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.fz-auth-submit-btn {
+  height: 42px;
+  margin-top: 4px;
+  background-color: var(--auth-cinnabar);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-family: var(--serif, serif);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.18s, transform 0.1s;
+}
+
+.fz-auth-submit-btn:hover:not(:disabled) {
+  background-color: var(--auth-cinnabar-hover);
+}
+
+.fz-auth-submit-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.fz-auth-submit-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.fz-auth-footer-notes {
+  margin-top: 8px;
+  text-align: center;
+  font-family: var(--serif, serif);
+  font-size: 12px;
+  color: var(--muted, #777c75);
+}
+
+/* 顶部徽标样式（与 Header 保持高度统一） */
+.fz-user-badge-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.fz-user-badge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px 4px 6px;
+  border-radius: 20px;
+  background: var(--paper-deep, #efede6);
+  border: 1px solid var(--line-strong, #bec4ba);
+  color: var(--ink, #1c211d);
+  font-family: var(--serif, serif);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.fz-user-badge-btn:hover {
+  border-color: var(--moss, #667968);
+  background: rgba(102, 121, 104, 0.06);
+}
+
+.fz-user-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--cinnabar, #963e37);
+  color: #ffffff;
+  font-size: 11px;
+  font-family: var(--serif, serif);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 未登录时的触发按钮：温润雅致，融入顶栏 */
+.fz-user-login-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 13px;
+  border-radius: 20px;
+  background: transparent;
+  border: 1px solid var(--line-strong, #bec4ba);
+  color: var(--cinnabar, #963e37);
+  font-family: var(--serif, serif);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.fz-user-login-trigger:hover {
+  border-color: var(--cinnabar, #963e37);
+  background: rgba(150, 62, 55, 0.05);
+  color: var(--cinnabar-deep, #84342f);
+}
+
+.fz-user-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 160px;
+  background: var(--paper, #f7f5f0);
+  border: 1px solid var(--line-strong, #bec4ba);
+  border-radius: 4px;
+  box-shadow: 0 10px 28px rgba(27, 31, 27, 0.12);
+  padding: 5px;
+  z-index: 100;
+  animation: fz-scale-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fz-user-menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  font-family: var(--serif, serif);
+  font-size: 13px;
+  color: var(--ink, #1c211d);
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+}
+
+.fz-user-menu-item:hover {
+  background: var(--paper-deep, #efede6);
+}
+
+.fz-user-menu-item.logout {
+  color: var(--cinnabar, #963e37);
+}
+
+.fz-user-menu-item.logout:hover {
+  background: rgba(150, 62, 55, 0.06);
+  color: var(--cinnabar-deep, #84342f);
+}
+
+.fz-user-menu-header {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--line, #d9dcd3);
+  margin-bottom: 4px;
+}
+
+.fz-user-menu-header strong {
+  display: block;
+  font-family: var(--serif, serif);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink, #1c211d);
+}
+
+.fz-user-menu-header small {
+  font-size: 11px;
+  color: var(--muted, #777c75);
+}

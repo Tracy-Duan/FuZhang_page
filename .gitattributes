@@ -1,0 +1,3 @@
+# Knowledge corpus hashes require byte-for-byte preservation across platforms.
+*.json -text
+*.jsonl -text
